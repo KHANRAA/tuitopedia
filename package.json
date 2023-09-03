@@ -1,5 +1,6 @@
 {
   "name": "tuitopedia",
+  "author": "Akash Khanra",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
