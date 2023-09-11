@@ -6,44 +6,35 @@ import {
     Tabs,
     TabList,
     Tab,
-    useColorModeValue,
-    Container
 } from "@chakra-ui/react";
-import {AiTwotoneThunderbolt, AiOutlineCloudServer} from 'react-icons/ai';
+import {AiOutlineCloudServer} from 'react-icons/ai';
 import {BiDesktop} from 'react-icons/bi';
 import {GiSpiderWeb} from 'react-icons/gi';
+import Faq from "../../entities/faq";
 
-const FaqCategories = () => {
-    const tabList = [
-        {
-            name: 'All',
-            filterName: '',
-            icon: AiTwotoneThunderbolt
-        },
-        {
-            name: 'Web Development',
-            filterName: 'development',
-            icon: BiDesktop
-        },
-        {
-            name: 'Web Design',
-            filterName: 'design',
-            icon: GiSpiderWeb
-        },
-        {
-            name: 'Devops',
-            filterName: 'devops',
-            icon: AiOutlineCloudServer
+interface Props {
+    data?: Faq[],
+    isLoading: boolean,
+}
+
+const FaqCategories = (props: Props) => {
+
+    const getCategoryIcon = (name: string) => {
+        switch (name) {
+            case 'Quickbooks':
+                return BiDesktop;
+            case 'question3':
+                return AiOutlineCloudServer;
+            default:
+                return GiSpiderWeb;
         }
-    ];
+    }
 
-    const [isLoading, setIsLoading] = useState(true);
-    const items: string[] = ["Product", "Pricing", "Content"];
     return (
 
         <Tabs variant="soft-rounded" colorScheme="blue" align="center" w="100%">
             <TabList display="flex" flexWrap="wrap" p={4}>
-                {tabList.map((tab, index) => (
+                {props.data?.map((eachFaq) => (
                     <Tab
                         bg={'gray.100'} _dark={{bg: 'grey.800', color: 'grey.500'}}
                         color={'gray.600'}
@@ -53,10 +44,10 @@ const FaqCategories = () => {
                         }}
                         mr={2}
                         mt={2}
-                        key={index}>
+                        key={eachFaq.id}>
                         <HStack spacing={1}>
-                            <Icon as={tab.icon}/>
-                            <Text>{tab.name}</Text>
+                            <Icon as={getCategoryIcon(eachFaq.category)}/>
+                            <Text>{eachFaq.category}</Text>
                         </HStack>
                     </Tab>
                 ))}

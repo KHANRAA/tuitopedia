@@ -17,9 +17,7 @@ const HomePage = () => {
         >
             <GridItem area="main">
                 <Box paddingLeft={5} paddingEnd={5}>
-
                     <FAQBanner/>
-                    <FaqCategories/>
                     <FAQContainer/>
                 </Box>
             </GridItem>

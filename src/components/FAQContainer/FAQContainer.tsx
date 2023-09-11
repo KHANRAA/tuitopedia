@@ -7,13 +7,14 @@ import {
     Text,
     Tag,
     Image,
-    useColorModeValue
+    useColorModeValue, useToast
 } from '@chakra-ui/react';
 import {useAllFaq} from "../../hooks/useFAQs";
 import Faq from "../../entities/faq";
 import {Prose} from '@nikolovlazar/chakra-ui-prose'
 import Parser from 'html-react-parser';
 import FAQSkeleton from "./FAQSkeleton";
+import FaqCategories from "../SideBar/FaqCategories";
 
 const FAQContainer = () => {
     const textColor = useColorModeValue('gray.500', 'gray.200');
@@ -21,11 +22,15 @@ const FAQContainer = () => {
     const {data, isLoading, isError, error} = useAllFaq();
 
     const toggleOpen = () => setIsOpen(!isOpen);
+    if (isError) {
+        // todo add toast
+    }
 
     return (
         <>
             {isLoading && (<FAQSkeleton/>)}
-            {!isLoading && (
+            {!isLoading && (<>
+                <FaqCategories data={data?.data} isLoading={isLoading}/>
                 <Container maxW="6xl" p={{base: 5, md: 5}}>
                     <VStack spacing={8}>
                         {data?.data.map((eachFaq: Faq) => (
@@ -76,7 +81,7 @@ const FAQContainer = () => {
                             </chakra.div>
                         ))}
                     </VStack>
-                </Container>)}
+                </Container></>)}
         </>
     );
 };
