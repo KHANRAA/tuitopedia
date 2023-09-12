@@ -10,9 +10,9 @@ interface FaqState {
 
 const useFaqStore = create<FaqState>((set) => ({
     faqs: [],
-    addFaq: (newFaq: Faq[]) => {
+    addFaq: (newFaqs: Faq[]) => {
         set((state) => ({
-            faqs: newFaq,
+            faqs: [...newFaqs],
         }));
     },
     removeFaq: (id) => {

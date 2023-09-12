@@ -23,59 +23,24 @@ import {TiUserDelete} from 'react-icons/ti';
 import {GiShieldDisabled} from 'react-icons/gi';
 
 import {useNavigate} from "react-router-dom";
-
-
-const networks: User[] = [
-    {
-        id: "test",
-        name: 'Abc',
-        isAdmin: false,
-        email: 'test@example.com',
-        avatarUrl: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
-        role: 'user',
-        isActive: true
-    },
-    {
-        id: "def",
-        name: 'Abc',
-        isAdmin: true,
-        email: 'test@example.com',
-        avatarUrl: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
-        role: 'user',
-        isActive: true
-    },
-    {
-        id: "geh",
-        name: 'Abc',
-        isAdmin: false,
-        email: 'test@example.com',
-        avatarUrl: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
-        role: 'user',
-        isActive: false
-    },
-
-];
+import {useAllUsers} from '../../hooks/useUsers';
+import {useEffect} from "react";
+import useUsersStore from "../../store/usersStore";
 
 const Users = () => {
     const navigate = useNavigate();
-    // const {data, isLoading, isError} = useGetUser();
-    //
-    // useEffect(() => {
-    //     console.log('here ....');
-    //     console.log(data);
-    //     console.log(data?.role);
-    //     // @ts-ignore
-    //     if (!data || !data.role || !data.role === 'admin') {
-    //         navigate('/');
-    //     }
-    //
-    // }, []);
+    const {users, addUsers} = useUsersStore();
+    const {data, isLoading, isError, error} = useAllUsers();
+    useEffect(() => {
+        if (data && data.data) addUsers(data?.data);
+    }, [data, addUsers]);
+
     return (
         <Container maxW="5xl" py={10} px={4}>
             <Box border="1px solid" borderColor="gray.400" rounded="lg" boxShadow="lg" overflow="hidden">
                 <Flex justify="left" p={5}>
                     <chakra.h3 fontSize="xl" fontWeight="bold" textAlign="center">
-                        Users
+                        TuitoPedia User
                     </chakra.h3>
                 </Flex>
                 <Divider/>
@@ -90,41 +55,41 @@ const Users = () => {
                             </Tr>
                         </Thead>
                         <Tbody>
-                            {networks.map((network, index) => (
-                                <Tr key={index}>
+                            {users.map((eachUser,) => (
+                                <Tr key={eachUser.id}>
                                     <Td fontSize="sm">
                                         <HStack spacing={2}>
                                             <WrapItem>
-                                                <Avatar bg='green.500' size='sm' name='Kent Dodds'
-                                                        src='https://bit.ly/kent-c-dodds'> <AvatarBadge boxSize='1.25em'
-                                                                                                        bg='green.500'/></Avatar>
+                                                <Avatar bg='green.500' size='sm' name={eachUser.name}
+                                                        src={eachUser.avatarUrl}> <AvatarBadge boxSize='1.25em'
+                                                                                               bg='green.500'/></Avatar>
                                             </WrapItem>
-                                            <Text>{network.name}</Text>
+                                            <Text>{eachUser.name}</Text>
                                         </HStack>
                                     </Td>
-                                    <Td fontSize="sm">{network.email}</Td>
+                                    <Td fontSize="sm">{eachUser.email}</Td>
                                     <Td fontSize="sm"><Badge
                                         rounded="full"
                                         p="2px 8px"
-                                        colorScheme={network.role === 'user' ? 'green' : 'blue'}
+                                        colorScheme={eachUser.role === 'admin' ? 'green' : 'blue'}
                                         as="button"
                                         onClick={() => {
                                         }}
                                     >
-                                        {network.role}
+                                        {eachUser.role}
                                     </Badge></Td>
                                     <Td>
                                         <Box rounded="md">
                                             <HStack spacing={2}>
                                                 <Button colorScheme='red' leftIcon={<TiUserDelete/>}>
-                                                    Delete
+                                                    Delete User
                                                 </Button>
                                                 <Button colorScheme='yellow' leftIcon={<GiShieldDisabled/>}>
-                                                    Disable
+                                                    Disable User
                                                 </Button>
                                             </HStack>
                                         </Box>
-                                    </Td>
+                                    </Td>s
                                 </Tr>
                             ))}
                         </Tbody>
