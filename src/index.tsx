@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import theme from './theme';
-import {Provider} from "react-redux";
 import reportWebVitals from './reportWebVitals';
 import {ChakraProvider} from '@chakra-ui/react'
 import {RouterProvider} from "react-router-dom";
 import router from "./routes";
-import {store} from "./store";
 import {QueryClientProvider} from "@tanstack/react-query";
 import {queryClient} from "./services/api-client";
+import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import '@fontsource/raleway/400.css';
 import '@fontsource/open-sans/700.css';
 
@@ -18,11 +17,10 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <ChakraProvider theme={theme}>
-            <Provider store={store}>
-                <QueryClientProvider client={queryClient}>
-                    <RouterProvider router={router}/>
-                </QueryClientProvider>
-            </Provider>
+            <QueryClientProvider client={queryClient}>
+                <RouterProvider router={router}/>
+                <ReactQueryDevtools initialIsOpen={true}/>
+            </QueryClientProvider>
         </ChakraProvider>
     </React.StrictMode>
 );

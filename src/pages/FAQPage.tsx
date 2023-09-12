@@ -9,14 +9,12 @@ const HomePage = () => {
             base: `"main"`,
             lg: `"main"`
 
-        }}
-              templateColumns={{
+        }} templateColumns={{
                   lg: `1fr`
               }}
-              gap='1'
-        >
+              gap='1'>
             <GridItem area="main">
-                <Box paddingLeft={5} paddingEnd={5}>
+                <Box >
                     <FAQBanner/>
                     <FAQContainer/>
                 </Box>

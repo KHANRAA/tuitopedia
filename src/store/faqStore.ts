@@ -1,0 +1,25 @@
+import create from "zustand";
+
+import Faq from "../entities/faq";
+
+interface FaqState {
+    faqs: Faq[];
+    addFaq: (newFaq: Faq[]) => void;
+    removeFaq: (category: string) => void;
+}
+
+const useFaqStore = create<FaqState>((set) => ({
+    faqs: [],
+    addFaq: (newFaq: Faq[]) => {
+        set((state) => ({
+            faqs: newFaq,
+        }));
+    },
+    removeFaq: (id) => {
+        set((state) => ({
+            faqs: state.faqs.filter((eachFaq) => eachFaq.id === id),
+        }));
+    }
+}));
+
+export default useFaqStore;

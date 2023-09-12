@@ -1,6 +1,7 @@
 import User from "../entities/user";
 import {AxiosRequestConfig} from 'axios';
 import APIClient from "./api-client";
+
 export const getTokenDuration = async () => {
     const storedExpirationDate: string = await JSON.parse(JSON.stringify(localStorage.getItem('expiration')));
     const expirationDate = new Date(storedExpirationDate);
@@ -38,11 +39,6 @@ export const getAuthUser = async () => {
 }
 
 
-export function tokenLoader() {
-    const token = getAuthToken();
-    return token;
-}
-
 export function checkAuthLoader() {
     const token = getAuthToken();
     return token;
@@ -67,7 +63,6 @@ export const checkAdminLoader = async () => {
     }
     return user;
 }
-
 
 
 export const logOut = async () => {

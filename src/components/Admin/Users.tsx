@@ -15,28 +15,21 @@ import {
     Tr,
     Td,
     Text,
-    Button,
-    useColorModeValue, AvatarBadge, IconButton, Avatar, WrapItem
+    Button, AvatarBadge, Avatar, WrapItem
 } from '@chakra-ui/react';
 import User from "../../entities/user";
 
 import {TiUserDelete} from 'react-icons/ti';
 import {GiShieldDisabled} from 'react-icons/gi';
 
-import {useEffect} from "react";
-import {useGetUser} from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
 
-interface Network {
-    name: string;
-    visotors: string;
-    visotorsRatio: string;
-}
 
 const networks: User[] = [
     {
         id: "test",
         name: 'Abc',
+        isAdmin: false,
         email: 'test@example.com',
         avatarUrl: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
         role: 'user',
@@ -45,6 +38,7 @@ const networks: User[] = [
     {
         id: "def",
         name: 'Abc',
+        isAdmin: true,
         email: 'test@example.com',
         avatarUrl: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
         role: 'user',
@@ -53,6 +47,7 @@ const networks: User[] = [
     {
         id: "geh",
         name: 'Abc',
+        isAdmin: false,
         email: 'test@example.com',
         avatarUrl: 'https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&auto=format&fit=crop&w=334&q=80',
         role: 'user',

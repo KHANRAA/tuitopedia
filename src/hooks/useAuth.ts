@@ -1,7 +1,7 @@
-import {useQuery, useMutation} from '@tanstack/react-query';
-import {signUpRequest, signInRequest, checkAuthLoader, getAuthToken, getAuthUser} from "../services/auth";
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {signUpRequest, signInRequest} from "../services/auth";
 import {useNavigate} from "react-router-dom";
-
+import useUserStore from "../store/userStore";
 
 const useAuthSignUp = () => {
     const navigate = useNavigate();
@@ -15,14 +15,15 @@ const useAuthSignUp = () => {
 }
 const useSignIn = () => {
     const navigate = useNavigate();
+    const {addUser} = useUserStore();
     return useMutation({
         mutationFn: signInRequest,
         onSuccess: (data, variables, context) => {
-            console.log("hi from signin ...");
             console.log(data);
-            const user = data.data;
-            localStorage.setItem('tuitoPediaToken', user.tuitoPediaToken || '');
-            localStorage.setItem('currentUser', JSON.stringify(user));
+            addUser(data.data)
+            localStorage.setItem('tuitoPediaToken', data.data.tuitoPediaToken || '');
+            localStorage.setItem('tuitoPediaToken', data.data.tuitoPediaToken || '');
+            localStorage.setItem('currentUser', JSON.stringify(data.data));
             const expiration = new Date();
             expiration.setHours(expiration.getHours() + 5);
             localStorage.setItem('expiration', expiration.toISOString());
@@ -32,33 +33,14 @@ const useSignIn = () => {
 
 }
 
-const useIsLoggedIn = () => {
-    return useQuery({
-        queryKey: ['isLoggedIn'],
-        queryFn: checkAuthLoader,
-    });
 
+const useGetAllUsers = () => {
+
+    return useQuery({})
 }
 
 
-const useGetUser = () => {
-    return useQuery({
-        queryKey: ['user'],
-        queryFn: getAuthUser,
-    });
-
-}
-const useGetToken = () => {
-    return useQuery({
-        queryKey: ['token'],
-        queryFn: getAuthToken,
-
-    });
-
-}
-
-
-export {useAuthSignUp, useSignIn, useIsLoggedIn, useGetToken, useGetUser};
+export {useAuthSignUp, useSignIn};
 
 
 

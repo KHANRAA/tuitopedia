@@ -28,7 +28,8 @@ import {BsPerson} from 'react-icons/bs';
 import {SmallCloseIcon} from '@chakra-ui/icons'
 import {MdEmail, MdOutlineEmail} from 'react-icons/md';
 
-import {useState} from "react";
+import React, {useState} from "react";
+import FileUpload from "../utils/FileUpload";
 
 interface Props {
     isOpen: boolean;
@@ -45,9 +46,7 @@ const Help = ({isOpen, onClose}: Props) => {
     return (
 
         <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay
-                bg='blackAlpha.300'
-                backdropFilter='blur(10px) hue-rotate(90deg)'
+            <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)'
             />
             <ModalContent>
                 <ModalHeader>
@@ -62,9 +61,9 @@ const Help = ({isOpen, onClose}: Props) => {
                     </Center>
                 </ModalHeader>
                 <ModalCloseButton/>
-                <ModalBody pb={6}>
+                <ModalBody pb={5}>
                     <Box
-                        bg={useColorModeValue('white', 'gray.700')}
+                        bg={useColorModeValue('grey.400', 'gray.700')}
                         borderRadius="md"
                         p={8}
                         color={useColorModeValue('gray.700', 'whiteAlpha.900')}
@@ -91,26 +90,13 @@ const Help = ({isOpen, onClose}: Props) => {
                                     <Input type="email" name="email" placeholder="Your Email"/>
                                 </InputGroup>
                             </FormControl>
-                            <FormControl variant="floating" id="userName">
+                            <FormControl id="userName">
                                 <FormLabel></FormLabel>
-                                <Stack direction={['column', 'row']} spacing={6}>
-                                    <Center>
-                                        <Avatar size="xl" src="https://bit.ly/sage-adebayo">
-                                            <AvatarBadge
-                                                as={IconButton}
-                                                size="sm"
-                                                rounded="full"
-                                                top="-10px"
-                                                colorScheme="red"
-                                                aria-label="remove Image"
-                                                icon={<SmallCloseIcon/>}
-                                            />
-                                        </Avatar>
-                                    </Center>
-                                    <Center w="full">
-                                        <Button w="auto">Upload Image </Button>
-                                    </Center>
-                                </Stack>
+
+
+                                        <FileUpload maxFiles={1} allowMultiple={false} fileTypes={['image/jpeg', 'image/png']}
+                                                    fileId={'fileId'} setFileId={()=>{}}/>
+
                             </FormControl>
 
                             <FormControl variant="floating" isRequired>
