@@ -18,6 +18,7 @@ import FAQSkeleton from "./FAQSkeleton";
 import FaqCategories from "../SideBar/FaqCategories";
 import useFaqStore from "../../store/faqStore";
 import useCategoryStore from "../../store/categoryStore";
+import useCategoriesStore from "../../store/categoriesStore";
 
 const FAQContainer = () => {
     const textColor = useColorModeValue('gray.500', 'gray.200');
@@ -26,28 +27,30 @@ const FAQContainer = () => {
     const {data, isLoading, isError, error} = useAllFaq();
     const {addFaq, removeFaq, faqs} = useFaqStore();
     const {category} = useCategoryStore();
+    const {setCategories} = useCategoriesStore();
 
     useEffect(() => {
         if (data && data.data) {
             addFaq(data?.data);
+            // eslint-disable-next-line array-callback-return
+            data?.data.map((eachFaq) => {
+                setCategories(eachFaq.category)
+            })
         }
         setCategory(category);
     }, [data, addFaq, removeFaq, category]);
 
 
     const toggleOpen = () => setIsOpen(!isOpen);
-    if (isError) {
-        // todo add toast
-    }
     return (
         <>
-            {isLoading && (<FAQSkeleton/>)}
+            {(isLoading || faqs.length === 0) && (<FAQSkeleton/>)}
             {!isLoading && (<>
                 <FaqCategories/>
                 <Container maxW="6xl" p={{base: 5, md: 5}}>
                     <VStack spacing={8}>
                         {faqs.map((eachFaq: Faq) => (
-                            <chakra.div onClick={toggleOpen} key={eachFaq.id}>
+                            <chakra.div onClick={toggleOpen} key={eachFaq.id} width="90%">
                                 <Box hidden={category !== '' && eachFaq.category !== selectedCategory}>
                                     <HStack
                                         p={4}

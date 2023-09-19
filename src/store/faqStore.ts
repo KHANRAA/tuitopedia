@@ -5,7 +5,7 @@ import Faq from "../entities/faq";
 interface FaqState {
     faqs: Faq[];
     addFaq: (newFaq: Faq[]) => void;
-    removeFaq: (category: string) => void;
+    removeFaq: (id: string) => void;
 }
 
 const useFaqStore = create<FaqState>((set) => ({

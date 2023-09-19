@@ -14,6 +14,7 @@ import {
     Button,
     MenuDivider, Icon
 } from "@chakra-ui/react";
+import {IoMdContacts} from "react-icons/io";
 import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import ColorModeSwitch from "./ColorModeSwitch";
 import {BiLogOut, BiLogIn} from "react-icons/bi";
@@ -91,6 +92,14 @@ const NavBar = () => {
                                     <br/>
                                     <MenuDivider/>
                                     <MenuOptionGroup defaultValue='asc' title='Admin' type='radio'>
+                                        <MenuItem>
+                                            <HStack>
+                                                <NavLink to={'/admin/helps'}>
+                                                    <Icon as={IoMdContacts}/>
+                                                    Edit/View Queries</NavLink>
+                                            </HStack>
+
+                                        </MenuItem>
                                         <MenuItem>
                                             <HStack>
                                                 <NavLink to={'/admin/addfaq'}>

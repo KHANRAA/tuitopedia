@@ -11,11 +11,13 @@ import {BiDesktop} from 'react-icons/bi';
 import {GiSpiderWeb} from 'react-icons/gi';
 import useFaqStore from "../../store/faqStore";
 import useCategoryStore from "../../store/categoryStore";
+import useCategoriesStore from "../../store/categoriesStore";
 
 const FaqCategories = () => {
     const {faqs} = useFaqStore();
 
     const {setCategory} = useCategoryStore();
+    const {categories} = useCategoriesStore();
     const getCategoryIcon = (name: string) => {
         switch (name) {
             case 'Quickbooks':
@@ -47,7 +49,7 @@ const FaqCategories = () => {
                     </HStack>
                 </Tab>)}
 
-                {faqs?.map((eachFaq) => (
+                {categories?.map((eachCategory) => (
                     <Tab
                         bg={'gray.100'} _dark={{bg: 'grey.800', color: 'grey.500'}}
                         color={'gray.600'}
@@ -57,10 +59,10 @@ const FaqCategories = () => {
                         }}
                         mr={2}
                         mt={2}
-                        key={eachFaq.id}>
-                        <HStack spacing={1} onClick={() => setCategory(eachFaq.category)}>
-                            <Icon as={getCategoryIcon(eachFaq.category)}/>
-                            <Text>{eachFaq.category}</Text>
+                        key={eachCategory}>
+                        <HStack spacing={1} onClick={() => setCategory(eachCategory)}>
+                            <Icon as={getCategoryIcon(eachCategory)}/>
+                            <Text>{eachCategory}</Text>
                         </HStack>
                     </Tab>
                 ))}

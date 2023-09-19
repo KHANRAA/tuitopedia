@@ -9,6 +9,8 @@ const theme = extendTheme({
     //     heading: `'Open Sans', sans-serif`,
     //     body: `'Raleway', sans-serif`,
     // },
+    initialColorMode: 'light',
+    useSystemColorMode: false,
     components: {
         Form: {
             variants: {
@@ -28,6 +30,7 @@ const theme = extendTheme({
                             zIndex: 2,
                             position: "absolute",
                             backgroundColor: "white",
+                            textColor: "black",
                             pointerEvents: "none",
                             mx: 3,
                             px: 1,

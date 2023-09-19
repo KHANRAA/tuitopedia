@@ -6,7 +6,8 @@ interface UsersState {
     users: User[];
     addUsers: (newUsers: User[]) => void;
     removeUser: (id: string) => void;
-    updateUser: (userData: User) => void;
+    updateAdminUser: (role: string, id: string) => void;
+    updateActiveUser: (isActive: boolean, id: string) => void;
 }
 
 const useUsersStore = create<UsersState>((set) => ({
@@ -21,11 +22,22 @@ const useUsersStore = create<UsersState>((set) => ({
             users: state.users.filter((eachFaq) => eachFaq.id !== id),
         }));
     },
-    updateUser: (userData: User) => {
+    updateAdminUser: (updateRole, id) => {
         set((state) => ({
-            users: state.users.map((eachUser) => eachUser.id === userData.id ? userData : eachUser)
+            users: state.users.map((eachUser) => {
+                if (eachUser.id === id) eachUser.role = updateRole;
+                return eachUser
+            })
         }));
     },
+    updateActiveUser: (isActive, id) => {
+        set((state) => ({
+            users: state.users.map((eachUser) => {
+                if (eachUser.id === id) eachUser.isActive = isActive;
+                return eachUser
+            })
+        }));
+    }
 }));
 
 export default useUsersStore;

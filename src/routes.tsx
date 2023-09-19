@@ -6,6 +6,7 @@ import AuthenticationPage from './pages/AuthPage';
 import CreateFaq from "./pages/Admin/CreateFaq";
 import UserPage from "./pages/Admin/UserPage";
 import {checkAdminLoader} from "./services/auth";
+import HelpsPage from "./pages/Admin/HelpsPage";
 
 
 const router = createBrowserRouter([
@@ -25,6 +26,12 @@ const router = createBrowserRouter([
                 path: '/admin/users',
                 loader: checkAdminLoader,
                 element: <UserPage/>,
+                errorElement: <ErrorPage/>
+            },
+            {
+                path: '/admin/helps',
+                loader: checkAdminLoader,
+                element: <HelpsPage/>,
                 errorElement: <ErrorPage/>
             },
             {

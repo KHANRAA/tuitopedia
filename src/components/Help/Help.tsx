@@ -1,3 +1,5 @@
+import React, {useEffect, useState} from "react";
+import {SubmitHandler, useForm} from "react-hook-form";
 import {
     Modal,
     ModalOverlay,
@@ -14,39 +16,73 @@ import {
     InputGroup,
     InputLeftElement,
     Textarea,
+    useToast,
     useColorModeValue,
-    VStack,
-    Stack,
-    Avatar,
-    AvatarBadge,
-    IconButton,
-    ModalFooter, Center,
+    VStack, Center, FormErrorMessage,
 } from "@chakra-ui/react";
 
-
+import {z} from 'zod';
+import {zodResolver} from "@hookform/resolvers/zod";
 import {BsPerson} from 'react-icons/bs';
-import {SmallCloseIcon} from '@chakra-ui/icons'
-import {MdEmail, MdOutlineEmail} from 'react-icons/md';
+import {MdOutlineEmail} from 'react-icons/md';
 
-import React, {useState} from "react";
 import FileUpload from "../utils/FileUpload";
+import {useAddHelp} from "../../hooks/useHelps";
+import {AxiosError} from "axios";
+import {useQueryClient} from "@tanstack/react-query";
+
+const formSchema = z.object({
+    name: z.string().min(4, {message: 'Please Provide full name'}).max(60),
+    email: z.string().email().min(5),
+    imageId: z.string().min(24, {message: 'Please select at-least 1 image ...'}).max(24, {message: 'Please select at-least 1 image ...'}),
+    message: z.string().min(10, {message: 'We need some more details!'}).max(1024, {message: 'Please reduce the message  size...'})
+}).required();
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const Help = ({isOpen, onClose}: Props) => {
-    const [image, setImage] = useState<any>([]);
-    const handleChangeImage = (files: any) => {
-        setImage(files)
-    }
 
+type FormValues = z.infer<typeof formSchema>;
+
+const Help = ({isOpen, onClose}: Props) => {
+    const queryClient = useQueryClient();
+    const toast = useToast();
+    const [fileId, setFileId] = useState('');
+    const {handleSubmit, register, watch, setValue, formState: {isSubmitting, errors}} = useForm<FormValues>({resolver: zodResolver(formSchema)})
+    const useAddHelpMutution = useAddHelp();
+
+    useEffect(() => {
+        setValue("imageId", fileId);
+
+    }, [register, fileId, setValue]);
+
+
+    const onSubmit: SubmitHandler<FormValues> = (values) => {
+
+        useAddHelpMutution.mutate({data: {...values}}, {
+            onSuccess: (data, variables, context) => {
+                queryClient.invalidateQueries({queryKey: ['helps']})
+            },
+            onError: (error, variables, context) => {
+                console.log(error);
+                toast({
+                    title: 'Something went wrong ',
+                    description: 'Something unexpected ...',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                })
+            }
+        })
+
+    }
 
     return (
 
         <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay bg='blackAlpha.300' backdropFilter='blur(10px) hue-rotate(90deg)'
+            <ModalOverlay backdropFilter='blur(10px) hue-rotate(90deg)'
             />
             <ModalContent>
                 <ModalHeader>
@@ -62,55 +98,63 @@ const Help = ({isOpen, onClose}: Props) => {
                 </ModalHeader>
                 <ModalCloseButton/>
                 <ModalBody pb={5}>
-                    <Box
-                        bg={useColorModeValue('grey.400', 'gray.700')}
-                        borderRadius="md"
-                        p={8}
-                        color={useColorModeValue('gray.700', 'whiteAlpha.900')}
-                        shadow="base">
+                    <Box as="form" onSubmit={handleSubmit(onSubmit)}
+                         bg={useColorModeValue('grey.400', 'gray.700')}
+                         borderRadius="md"
+                         p={8}
+                         color={useColorModeValue('gray.700', 'whiteAlpha.900')}
+                         shadow="base">
                         <VStack spacing={4}>
-                            <FormControl variant="floating" isRequired>
-                                <FormLabel>Name</FormLabel>
+                            <FormControl variant="floating" id="name" isInvalid={!!errors.name}>
 
                                 <InputGroup>
                                     <InputLeftElement>
                                         <BsPerson/>
                                     </InputLeftElement>
-                                    <Input type="text" name="name" placeholder="Your Name"/>
+                                    <Input {...register('name')} type="text" name="name"
+                                           placeholder=" "/>
                                 </InputGroup>
+                                <FormLabel>Provide Your Name!</FormLabel>
+                                <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                             </FormControl>
 
-                            <FormControl variant="floating" isRequired>
-                                <FormLabel>Email</FormLabel>
+                            <FormControl variant="floating" id="email" isInvalid={!!errors.email}>
 
                                 <InputGroup>
                                     <InputLeftElement>
                                         <MdOutlineEmail/>
                                     </InputLeftElement>
-                                    <Input type="email" name="email" placeholder="Your Email"/>
+                                    <Input {...register('email')} type="email" name="email" placeholder=" "/>
                                 </InputGroup>
+                                <FormLabel>Provide your Email!</FormLabel>
                             </FormControl>
-                            <FormControl id="userName">
-                                <FormLabel></FormLabel>
-
-
-                                        <FileUpload maxFiles={1} allowMultiple={false} fileTypes={['image/jpeg', 'image/png']}
-                                                    fileId={'fileId'} setFileId={()=>{}}/>
-
-                            </FormControl>
-
-                            <FormControl variant="floating" isRequired>
-                                <FormLabel>Message</FormLabel>
-
-                                <Textarea
-                                    name="message"
-                                    placeholder="Your Message"
-                                    rows={6}
-                                    resize="none"
+                            <FormControl id="issueImageId" isInvalid={!!errors.imageId}>
+                                <Input id="imageUrl" {...register('imageId')}
+                                       type="text"
+                                       value={fileId}
+                                       hidden={true}
                                 />
+
+                                <FormLabel>Upload Image</FormLabel>
+                                <FileUpload maxFiles={1} allowMultiple={false} fileTypes={['image/jpeg', 'image/png']}
+                                            fileId={fileId} setFileId={setFileId} path={'contact/upload'}/>
+                                <FormErrorMessage>{errors.imageId?.message}</FormErrorMessage>
+
+                            </FormControl>
+
+                            <FormControl variant="floating" id="message" isInvalid={!!errors.message}>
+                                <Textarea {...register('message')}
+                                          name="message"
+                                          placeholder=" "
+                                          rows={6}
+                                          resize="block"
+                                />
+                                <FormLabel>Please provide the issue in brief!</FormLabel>
+                                <FormErrorMessage>{errors.message?.message}</FormErrorMessage>
                             </FormControl>
 
                             <Button
+                                type="submit"
                                 colorScheme="blue"
                                 bg="blue.400"
                                 color="white"
@@ -123,13 +167,6 @@ const Help = ({isOpen, onClose}: Props) => {
                         </VStack>
                     </Box>
                 </ModalBody>
-
-                <ModalFooter>
-                    <Button colorScheme='blue' mr={3}>
-                        Save
-                    </Button>
-                    <Button onClick={onClose}>Cancel</Button>
-                </ModalFooter>
             </ModalContent>
         </Modal>
     )

@@ -38,13 +38,13 @@ class APIClient<T> {
     post = async (path: string, config: AxiosRequestConfig) => {
         let token = await getToken();
         const res = await axiosInstance
-            .post<T>(this.endPoint + '/' + path, {...config, headers: {...config.headers, 'tuitopediatoken': token}});
+            .post<T>(this.endPoint + '/' + path, config, {...config, headers: {...config.headers, 'tuitopediatoken': token}});
         return res.data;
     };
     put = async (path: string, config: AxiosRequestConfig) => {
         let token = await getToken();
         const res = await axiosInstance
-            .put<T>(this.endPoint + '/' + path, {...config, headers: {...config.headers, 'tuitopediatoken': token}});
+            .put<T>(this.endPoint + '/' + path, config, {...config, headers: {...config.headers, 'tuitopediatoken': token}});
         return res.data;
     };
     delete = async (path: string, config: AxiosRequestConfig) => {

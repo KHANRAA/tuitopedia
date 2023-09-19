@@ -6,7 +6,7 @@ export default interface User {
     role: string;
     email: string;
     isAdmin: boolean;
-    avatarUrl: string;
+    avatarImageUrl: string;
     isActive: boolean;
     tuitoPediaToken?: string;
 }
