@@ -130,7 +130,7 @@ const Faq = () => {
                                 <FormErrorMessage>{errors.content?.message}</FormErrorMessage>
                             </FormControl>
                             <FormControl variant="floating" id="category" isInvalid={!!errors.category}>
-                                <Select  {...register('category')}>
+                                <Select  variant='outline'  {...register('category')}>
                                     {categories.map((eachCategory) =>
                                         <option value={eachCategory}>{eachCategory}</option>
                                     )}
