@@ -114,7 +114,7 @@ const Helps = () => {
                                     <Td>
                                         <Box rounded="md">
                                             <HStack spacing={3} justifyContent={'space-between'}>
-                                                <Button color={'teal'} variant="solid"
+                                                <Button colorScheme={'pink'}
                                                         leftIcon={<VscCommentUnresolved/>}
                                                         onClick={() => {
 
