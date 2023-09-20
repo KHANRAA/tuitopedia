@@ -4,7 +4,6 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-quill/dist/quill.bubble.css";
 import "react-quill/dist/quill.core.css";
-import {DeltaStatic} from "quill";
 
 import "./faq.css";
 
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const QuillEditor = ({id, value, inputRef, placeholder, onChange, isReadonly}: Props) => {
-    const [theme, setTheme] = useState("snow");
+    const [theme] = useState("snow");
 
     return (<ReactQuill
         id={id}

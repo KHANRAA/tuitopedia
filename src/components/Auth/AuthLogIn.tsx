@@ -37,7 +37,7 @@ const Auth = () => {
     const {register, formState: {errors}, handleSubmit} = useForm<SignInData>({
         resolver: zodResolver(signInSchema)
     })
-    const {mutate, data, isLoading, isError, error} = useSignIn();
+    const {mutate, isLoading, isError, error} = useSignIn();
 
     const onSubmit: SubmitHandler<SignInData> = (values) => {
         mutate({data: {...values, returnSecureToken: true}});

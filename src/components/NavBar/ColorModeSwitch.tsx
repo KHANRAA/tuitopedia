@@ -1,4 +1,4 @@
-import {HStack, Button, Flex, useColorMode} from "@chakra-ui/react";
+import {HStack, Button, useColorMode} from "@chakra-ui/react";
 import {BsSun, BsMoonStarsFill} from 'react-icons/bs'
 
 const ColorModeSwitch = () => {

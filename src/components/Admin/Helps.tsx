@@ -23,7 +23,7 @@ import {
 import {BiSolidZoomIn} from "react-icons/bi";
 import {TbExternalLink} from "react-icons/tb";
 import {VscCommentUnresolved} from 'react-icons/vsc';
-import {useEffect, useState} from "react";
+import {useEffect, useCallback, useState} from "react";
 import {useQueryClient} from "@tanstack/react-query";
 import useUserStore from "../../store/userStore";
 import {useAdminMarkedResponded, useAllHelps} from "../../hooks/useHelps";
@@ -33,16 +33,19 @@ import ModalHelper from "../utils/ModalHelper";
 const Helps = () => {
     const pulseBoxes = Array.from(Array(4).keys());
     const {data, isLoading} = useAllHelps();
-    const {helps, addHelps} = useHelpStore()
+    const {helps, addHelps} = useHelpStore();
     const [modelContent, setModelContent] = useState('Loading ...');
-    const {user} = useUserStore();
+    const {user, addUser} = useUserStore();
     const helpRespondMarkMutuation = useAdminMarkedResponded();
     const queryClient = useQueryClient();
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     useEffect(() => {
+        console.log('called....');
+        console.log(data?.data);
+        console.log(user);
         if (data && data.data) addHelps(data?.data);
-    }, [data, addHelps]);
+    }, [data?.data, addHelps, user, addUser]);
 
 
     if (isLoading || !user || !user.tuitoPediaToken) {
@@ -67,7 +70,7 @@ const Helps = () => {
         <Container maxW="5xl" py={10} px={4}>
             <Box border="1px solid" borderColor="gray.400" rounded="lg" boxShadow="lg">
                 <Flex justify="left" p={5}>
-                    <chakra.h3 fontSize="xl" fontWeight="bold" textAlign="center">
+                    <chakra.h3 fontSize="xl"  id="table-header" fontWeight="bold" textAlign="center">
                         Help Requests
                     </chakra.h3>
                 </Flex>

@@ -13,7 +13,7 @@ const useAllFaq = () => {
     return useQuery({
         queryKey: ['faqs'],
         queryFn: getFaqs,
-        staleTime: 2000,
+        staleTime: 20000,
     });
 };
 

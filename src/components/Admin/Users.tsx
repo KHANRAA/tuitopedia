@@ -29,7 +29,7 @@ import useUserStore from "../../store/userStore";
 
 const Users = () => {
     const pulseBoxes = Array.from(Array(4).keys());
-    const {data, isLoading, isError, error} = useAllUsers();
+    const {data, isLoading} = useAllUsers();
     const {users, addUsers, updateActiveUser, updateAdminUser} = useUsersStore();
     const {user} = useUserStore();
     const userAdminMutation = useAlterAdminUser();

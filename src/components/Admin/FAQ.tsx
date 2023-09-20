@@ -42,7 +42,7 @@ const Faq = () => {
         resolver: zodResolver(fromSchema)
     });
     const {data} = useAllFaq();
-    const {mutate, isLoading, error, isError} = useAddFaq();
+    const {mutate, error, isError} = useAddFaq();
     const [fileId, setFileId] = useState('');
     const {addFaq} = useFaqStore();
     const {setCategories} = useCategoriesStore();
@@ -132,7 +132,7 @@ const Faq = () => {
                             <FormControl variant="floating" id="category" isInvalid={!!errors.category}>
                                 <Select  variant='outline'  {...register('category')}>
                                     {categories.map((eachCategory) =>
-                                        <option value={eachCategory}>{eachCategory}</option>
+                                        <option key={eachCategory} value={eachCategory}>{eachCategory}</option>
                                     )}
                                 </Select>
                                 <FormLabel>Select Category!</FormLabel>

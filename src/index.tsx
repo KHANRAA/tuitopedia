@@ -5,11 +5,20 @@ import reportWebVitals from './reportWebVitals';
 import {ChakraProvider} from '@chakra-ui/react'
 import {RouterProvider} from "react-router-dom";
 import router from "./routes";
-import {QueryClientProvider} from "@tanstack/react-query";
-import {queryClient} from "./services/api-client";
+import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
 import {ReactQueryDevtools} from '@tanstack/react-query-devtools';
 import '@fontsource/raleway/400.css';
-import '@fontsource/open-sans/700.css';
+import '@fontsource/open-sans/700.css'
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            staleTime: 2 * 1000,
+            cacheTime: 6 * 1000,
+            retry: 3,
+        },
+    }
+});
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -19,7 +28,7 @@ root.render(
         <ChakraProvider theme={theme}>
             <QueryClientProvider client={queryClient}>
                 <RouterProvider router={router}/>
-                <ReactQueryDevtools initialIsOpen={true}/>
+                {process.env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false}/>}
             </QueryClientProvider>
         </ChakraProvider>
     </React.StrictMode>

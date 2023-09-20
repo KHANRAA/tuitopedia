@@ -7,7 +7,7 @@ import useUserStore from "../store/userStore";
 const AuthPage = () => {
     const navigate = useNavigate();
     const {user} = useUserStore();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const isLogin = searchParams.get('mode') === 'login';
     if (user && user.tuitoPediaToken) {
         navigate('/');

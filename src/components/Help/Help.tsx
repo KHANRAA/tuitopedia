@@ -28,7 +28,6 @@ import {MdOutlineEmail} from 'react-icons/md';
 
 import FileUpload from "../utils/FileUpload";
 import {useAddHelp} from "../../hooks/useHelps";
-import {AxiosError} from "axios";
 import {useQueryClient} from "@tanstack/react-query";
 
 const formSchema = z.object({
@@ -50,12 +49,11 @@ const Help = ({isOpen, onClose}: Props) => {
     const queryClient = useQueryClient();
     const toast = useToast();
     const [fileId, setFileId] = useState('');
-    const {handleSubmit, register, watch, setValue, formState: {isSubmitting, errors}} = useForm<FormValues>({resolver: zodResolver(formSchema)})
+    const {handleSubmit, register, watch, setValue, formState: { errors}} = useForm<FormValues>({resolver: zodResolver(formSchema)})
     const useAddHelpMutution = useAddHelp();
 
     useEffect(() => {
         setValue("imageId", fileId);
-
     }, [register, fileId, setValue]);
 
 

@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import {signUpRequest, signInRequest} from "../services/auth";
 import {useNavigate} from "react-router-dom";
 import useUserStore from "../store/userStore";
@@ -19,7 +19,6 @@ const useSignIn = () => {
     return useMutation({
         mutationFn: signInRequest,
         onSuccess: (data, variables, context) => {
-            console.log(data);
             addUser(data.data)
             localStorage.setItem('tuitoPediaToken', data.data.tuitoPediaToken || '');
             localStorage.setItem('tuitoPediaToken', data.data.tuitoPediaToken || '');
@@ -32,13 +31,6 @@ const useSignIn = () => {
     });
 
 }
-
-
-const useGetAllUsers = () => {
-
-    return useQuery({})
-}
-
 
 export {useAuthSignUp, useSignIn};
 

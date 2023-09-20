@@ -1,8 +1,6 @@
 import {Grid, GridItem, Box} from '@chakra-ui/react';
-import FaqCategories from "../components/SideBar/FaqCategories";
 import FAQContainer from "../components/FAQContainer/FAQContainer";
 import FAQBanner from "../components/FAQContainer/FAQBanner";
-import useFaqStore from "../store/faqStore";
 
 const HomePage = () => {
 

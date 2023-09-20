@@ -1,7 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
-import {QueryClient} from "@tanstack/react-query";
 
-export const queryClient = new QueryClient();
 
 interface ResponseSchema<T> {
     status: number,
