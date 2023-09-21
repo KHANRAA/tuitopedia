@@ -147,7 +147,7 @@ const Help = ({isOpen, onClose}: Props) => {
                                           rows={6}
                                           resize="block"
                                 />
-                                <FormLabel>Please provide the issue in brief!</FormLabel>
+                                <FormLabel>Please provide the issue in detail!</FormLabel>
                                 <FormErrorMessage>{errors.message?.message}</FormErrorMessage>
                             </FormControl>
 
