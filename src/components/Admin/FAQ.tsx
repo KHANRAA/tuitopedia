@@ -131,6 +131,7 @@ const Faq = () => {
                             </FormControl>
                             <FormControl variant="floating" id="category" isInvalid={!!errors.category}>
                                 <Select  variant='outline'  {...register('category')}>
+                                    <option key="General"  selected value="General">General</option>
                                     {categories.map((eachCategory) =>
                                         <option key={eachCategory} value={eachCategory}>{eachCategory}</option>
                                     )}

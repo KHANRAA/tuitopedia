@@ -42,10 +42,9 @@ const AuthLogin = () => {
     const onSubmit: SubmitHandler<SignInData> = (values) => {
         mutate({data: {...values, returnSecureToken: true}});
         if (isError && error instanceof AxiosError) {
-            console.log(error);
             toast({
                 title: 'Something went wrong ',
-                description: error.response?.data.data.message || 'Something unexpected ...',
+                description: error.response?.data?.data.message || 'Something unexpected ...',
                 status: 'error',
                 duration: 5000,
                 isClosable: true,

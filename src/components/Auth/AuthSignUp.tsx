@@ -21,6 +21,7 @@ import {AxiosError} from "axios";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {useAuthSignUp} from "../../hooks/useAuth";
+import {useNavigate} from "react-router-dom";
 
 const formSchema = z.object({
     firstName: z.string().min(2, {message: "First name is required."}).max(30),
@@ -45,6 +46,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 const AuthSignUp = () => {
     const toast = useToast();
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,
@@ -97,20 +99,20 @@ const AuthSignUp = () => {
 
                         <HStack>
 
-                                <FormControl variant="floating" id="firstName" isInvalid={!!errors.firstName}>
+                            <FormControl variant="floating" id="firstName" isInvalid={!!errors.firstName}>
 
-                                    <Input id="firstName" {...register("firstName")} placeholder="First Name" type="text"/>
-                                    <FormLabel>First Name</FormLabel>
-                                    <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
-                                </FormControl>
+                                <Input id="firstName" {...register("firstName")} placeholder="First Name" type="text"/>
+                                <FormLabel>First Name</FormLabel>
+                                <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+                            </FormControl>
 
 
-                                <FormControl variant="floating" id="lastName" isInvalid={!!errors.lastName}>
+                            <FormControl variant="floating" id="lastName" isInvalid={!!errors.lastName}>
 
-                                    <Input id="lastName" {...register("lastName")} placeholder="Last Name" type="text"/>
-                                    <FormLabel>Last Name</FormLabel>
-                                    <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
-                                </FormControl>
+                                <Input id="lastName" {...register("lastName")} placeholder="Last Name" type="text"/>
+                                <FormLabel>Last Name</FormLabel>
+                                <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+                            </FormControl>
 
                         </HStack>
                         <FormControl variant="floating" id="email" isInvalid={!!errors.email}>

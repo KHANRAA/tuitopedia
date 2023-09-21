@@ -1,10 +1,15 @@
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {addFaqRequest, getFaqs} from "../services/faq";
+import {useNavigate} from "react-router-dom";
 
 const useAddFaq = () => {
+    const navigate = useNavigate();
     return useMutation({
         mutationKey: ['addFaq'],
         mutationFn: addFaqRequest,
+        onSuccess: () => {
+            navigate('/')
+        }
     });
 
 }

@@ -8,7 +8,7 @@ const useAuthSignUp = () => {
     return useMutation({
         mutationFn: signUpRequest,
         onSuccess: () => {
-            navigate('/auth/login')
+            navigate('/auth?mode=login')
         }
     });
 
