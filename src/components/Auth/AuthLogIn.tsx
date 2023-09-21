@@ -30,7 +30,7 @@ const signInSchema = z.object({
 
 type SignInData = z.infer<typeof signInSchema>;
 
-const Auth = () => {
+const AuthLogin = () => {
     const toast = useToast();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -108,7 +108,7 @@ const Auth = () => {
                             </Stack>
                             <Stack pt={6}>
                                 <Text align={'center'}>
-                                    First time here ? <ReactLink color={'blue.400'} href={'?mode/signup'}>Sign Up
+                                    First time here ? <ReactLink color={'blue.400'} href={'?mode=signup'}>Sign Up
                                 </ReactLink>
                                 </Text>
                             </Stack>
@@ -122,4 +122,4 @@ const Auth = () => {
 
 }
 
-export default Auth;
+export default AuthLogin;

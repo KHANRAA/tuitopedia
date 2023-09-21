@@ -11,11 +11,10 @@ export const getTokenDuration = async () => {
 }
 
 export const getAuthToken = async () => {
-    const token = localStorage.getItem('tuitoPediaToken');
+    const token = localStorage.getItem('tuitoPediaToken') || '';
     console.log(token);
 
-    if (!token) {
-        console.log('returning null');
+    if (!token || token.length < 1) {
         return null;
     }
 

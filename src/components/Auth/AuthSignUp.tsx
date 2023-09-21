@@ -43,9 +43,8 @@ const formSchema = z.object({
 );
 
 type FormValues = z.infer<typeof formSchema>;
-const Auth = () => {
+const AuthSignUp = () => {
     const toast = useToast();
-
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,
@@ -179,6 +178,5 @@ const Auth = () => {
 
     )
 
-
 }
-export default Auth;
+export default AuthSignUp;
