@@ -6,9 +6,9 @@ import {
     TabList,
     Tab,
 } from "@chakra-ui/react";
-import {AiOutlineCloudServer} from 'react-icons/ai';
-import {BiDesktop} from 'react-icons/bi';
-import {GiSpiderWeb} from 'react-icons/gi';
+import {FaRegCreditCard} from 'react-icons/fa';
+import {HiLightBulb} from 'react-icons/hi';
+import {BsCheckAll} from 'react-icons/bs';
 import useFaqStore from "../../store/faqStore";
 import useCategoryStore from "../../store/categoryStore";
 import useCategoriesStore from "../../store/categoriesStore";
@@ -20,12 +20,12 @@ const FaqCategories = () => {
     const {categories} = useCategoriesStore();
     const getCategoryIcon = (name: string) => {
         switch (name) {
-            case 'Quickbooks':
-                return BiDesktop;
-            case 'question3':
-                return AiOutlineCloudServer;
+            case 'Credit':
+                return FaRegCreditCard;
+            case 'All':
+                return BsCheckAll;
             default:
-                return GiSpiderWeb;
+                return HiLightBulb;
         }
     }
 
@@ -44,7 +44,7 @@ const FaqCategories = () => {
                     mt={2}
                     key={'all'}>
                     <HStack spacing={1} onClick={() => setCategory('')}>
-                        <Icon as={getCategoryIcon('')}/>
+                        <Icon as={getCategoryIcon('All')}/>
                         <Text>All</Text>
                     </HStack>
                 </Tab>)}
