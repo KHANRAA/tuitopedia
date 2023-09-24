@@ -13,7 +13,7 @@ const getToken = async () => {
 
 
 const axiosInstance: AxiosInstance = axios.create({
-    baseURL: 'http://localhost:4200/api',
+    baseURL: 'https://intuitopedia-backend-214448b64703.herokuapp.com/api',
     headers: {
         'Content-Type': 'application/json',
     }
