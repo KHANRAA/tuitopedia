@@ -19,10 +19,11 @@ import FAQ from './FAQ';
 import useUserStore from "../../store/userStore";
 import {TbExternalLink} from "react-icons/tb";
 import {GrValidate} from "react-icons/gr";
-import {useAllFaq} from "../../hooks/useFAQs";
+import {useAllFaq, useUpdateFaq} from "../../hooks/useFAQs";
 import {useEffect, useState} from "react";
 import {LuFileEdit} from "react-icons/lu";
 import {FaTrash} from "react-icons/fa6";
+import {RxCrossCircled} from "react-icons/rx";
 import ModalHelper from "../utils/ModalHelper";
 import useFaqStore from "../../store/faqStore";
 import Faq, {getDummyFaq} from "../../entities/faq";
@@ -33,6 +34,7 @@ const FAQManager = () => {
     const {faqs, addFaq, removeFaq} = useFaqStore();
     const {data, isLoading, isError, error} = useAllFaq();
     const {user} = useUserStore();
+    const updateFAQMutation = useUpdateFaq();
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     useEffect(() => {
@@ -40,7 +42,6 @@ const FAQManager = () => {
             addFaq(data?.data);
         }
     }, [data, addFaq, removeFaq]);
-
 
     if (!user || !user.tuitoPediaToken) {
         return <Container maxW="8xl%" px={5} py={8} mx="auto">
@@ -103,7 +104,8 @@ const FAQManager = () => {
                                 <Td fontSize="sm">
                                     <HStack spacing={2}>
                                         <Avatar bg={eachFaq.isActive ? 'green.500' : 'red.500'}
-                                                icon={<GrValidate fontSize='1.2rem'/>}/>
+                                                icon={eachFaq.isActive ? <GrValidate fontSize='1.2rem'/> :
+                                                    <RxCrossCircled fontSize='1.2rem'/>}/>
                                     </HStack>
                                 </Td>
                                 <Td>
@@ -125,9 +127,17 @@ const FAQManager = () => {
                                         </Box>
                                         <Box rounded="md">
                                             <HStack spacing={3} justifyContent={'space-between'}>
-                                                <Button colorScheme={'red'}
-                                                        leftIcon={<FaTrash/>}>
-                                                    Delete
+                                                <Button colorScheme={!eachFaq.isActive ? 'green' : 'red'}
+                                                        isLoading={updateFAQMutation.isLoading}
+                                                        leftIcon={<FaTrash/>} onClick={() => {
+                                                    updateFAQMutation.mutate({
+                                                        data: {
+                                                            ...eachFaq,
+                                                            isActive: !eachFaq.isActive
+                                                        }
+                                                    });
+                                                }}>
+                                                    {!eachFaq.isActive ? 'Mark as Active' : 'Mark Inactive'}
                                                 </Button>
                                             </HStack>
                                         </Box>

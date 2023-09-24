@@ -23,7 +23,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import ColorModeSwitch from "./ColorModeSwitch";
 import {BiLogOut, BiLogIn} from "react-icons/bi";
 import {RiAdminLine} from 'react-icons/ri';
-import {useQueries} from "@tanstack/react-query";
+import {useQueries, useQueryClient} from "@tanstack/react-query";
 import ReactLogo from "../../assets/logo192.png";
 import {getAuthUser, isLoggedInUser, logOut} from "../../services/auth";
 import User from "../../entities/user";
@@ -33,6 +33,7 @@ import useUserStore from "../../store/userStore";
 const NavBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const qyeryClient = useQueryClient();
 
     const [isLoggedInStatus, authStatus] = useQueries({
         queries: [
@@ -134,6 +135,8 @@ const NavBar = () => {
                                 <HStack onClick={async () => {
                                     await logOut();
                                     removeUser();
+                                    qyeryClient.invalidateQueries(['faqs']);
+
                                     navigate('/');
                                 }}>
                                     <Icon as={BiLogOut}/>

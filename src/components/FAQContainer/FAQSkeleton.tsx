@@ -2,7 +2,7 @@ import { Container, Box, HStack, Skeleton, Stack } from '@chakra-ui/react';
 
 const FAQSkeleton = () => {
     return (
-        <Container maxW="4xl" px={8} py={16} mx="auto">
+        <Container maxW="8xl" px={8} py={16} mx="auto">
             <Stack spacing={3} mt="3">
                 {Array.from(Array(4).keys()).map((id) => {
                     return (

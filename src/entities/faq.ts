@@ -15,6 +15,7 @@ export interface FaqRequest {
     content: string;
     imageId: string;
     category: string;
+    id?: string;
 };
 
 

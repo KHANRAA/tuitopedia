@@ -183,7 +183,7 @@ const FAQ = (props: Props) => {
                             </FormControl>
                             <FormControl variant="floating" id="category" isInvalid={!!errors.category}>
                                 <Select variant='outline'  {...register('category')}>
-                                    <option key="General" hidden={categories.length > 0} selected
+                                    <option key="default" hidden={categories.length > 0} defaultChecked
                                             value="General">General
                                     </option>
                                     {categories.map((eachCategory) =>

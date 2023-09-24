@@ -1,13 +1,16 @@
-import {useMutation, useQuery} from "@tanstack/react-query";
-import {addFaqRequest, getFaqs, updateFAQ} from "../services/faq";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {addFaqRequest, getFaqs, updateFaqRequest} from "../services/faq";
 import {useNavigate} from "react-router-dom";
+import useFaqStore from "../store/faqStore";
 
 const useAddFaq = () => {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ['addFaq'],
         mutationFn: addFaqRequest,
         onSuccess: () => {
+            queryClient.invalidateQueries(['faqs']);
             navigate('/')
         }
     });
@@ -16,16 +19,20 @@ const useAddFaq = () => {
 
 
 export const useUpdateFaq = () => {
-    const navigate = useNavigate();
+    const {updateFaq} = useFaqStore();
+    const queryClient = useQueryClient();
     return useMutation({
         mutationKey: ['updateFaq'],
-        mutationFn: updateFAQ,
-        onSuccess: () => {
-            navigate('/')
+        mutationFn: updateFaqRequest,
+        onSuccess: (data, variables, context) => {
+            updateFaq(data.data);
+            console.log('here!...');
+            queryClient.invalidateQueries(['faqs']);
         }
     });
 
 }
+
 const useAllFaq = () => {
     return useQuery({
         queryKey: ['faqs'],

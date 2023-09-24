@@ -38,7 +38,7 @@ const FaqCategories = () => {
                     color={'gray.600'}
                     _selected={{
                         color: 'white',
-                        bg: 'teal'
+                        bg: 'green'
                     }}
                     mr={2}
                     mt={2}

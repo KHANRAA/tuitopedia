@@ -54,7 +54,7 @@ const FileUpload = (props: FileUploaderProps) => {
             maxFiles={props.maxFiles}
             name="filepond"
             server={{
-                url: 'https://intuitopedia-backend-214448b64703.herokuapp.com/api',
+                url: 'http://localhost:4200/api',
                 timeout: 10000,
                 process: {
                     url: `/${props.path}`,

@@ -26,16 +26,22 @@ import {useNavigate} from "react-router-dom";
 const formSchema = z.object({
     firstName: z.string().min(2, {message: "First name is required."}).max(30),
     lastName: z.string().min(2, {message: "Last name is required."}).max(60),
-    email: z.string().email({message: "Email is required."}).min(5, {message: "Email is required."}),
+    email: z.string().email({message: "Email is required."}),
     password: z
         .string()
-        .min(6, {message: "Password must be at least 6 characters"}),
+        .regex(new RegExp(".*[A-Z].*"), "One uppercase character")
+        .regex(new RegExp(".*[a-z].*"), "One lowercase character")
+        .regex(new RegExp(".*\\d.*"), "One number")
+        .regex(
+            new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+            "One special character"
+        ).min(6, {message: "Password must be at least 6 characters"}),
     passwordConfirmation: z
         .string()
         .min(1, {message: "You must confirm your password"}),
 
 
-}).refine(
+}).required().refine(
     ({password, passwordConfirmation}) => password === passwordConfirmation,
     {
         message: "Passwords must match",
@@ -53,7 +59,8 @@ const AuthSignUp = () => {
         handleSubmit,
         formState: {errors, isValid},
     } = useForm<FormValues>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        mode: 'onChange'
     });
     const {mutate, isLoading, isError, error} = useAuthSignUp();
 
@@ -97,12 +104,13 @@ const AuthSignUp = () => {
                 <Container as="form" method='post' onSubmit={handleSubmit(onSubmit)}>
                     <Stack spacing={4}>
 
-                        <HStack>
+                        <HStack spacing={2}>
 
                             <FormControl variant="floating" id="firstName" isInvalid={!!errors.firstName}>
 
                                 <Input id="firstName" {...register("firstName")} placeholder=" " type="text"/>
-                                <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>First Name</FormLabel>
+                                <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>First
+                                    Name</FormLabel>
                                 <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
                             </FormControl>
 
@@ -110,7 +118,7 @@ const AuthSignUp = () => {
                             <FormControl variant="floating" id="lastName" isInvalid={!!errors.lastName}>
 
                                 <Input id="lastName" {...register("lastName")} placeholder=" " type="text"/>
-                                <FormLabel>Last Name</FormLabel>
+                                <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Last Name</FormLabel>
                                 <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
                             </FormControl>
 
@@ -118,7 +126,8 @@ const AuthSignUp = () => {
                         <FormControl variant="floating" id="email" isInvalid={!!errors.email}>
 
                             <Input id="email" {...register("email")} placeholder=" " type="email"/>
-                            <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>Email address</FormLabel>
+                            <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Email
+                                address</FormLabel>
                             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                         </FormControl>
                         <FormControl variant="floating" id="password" isInvalid={!!errors.password}>
@@ -127,7 +136,7 @@ const AuthSignUp = () => {
                                 <Input id="password"  {...register("password")}
                                        type={showPassword ? 'text' : 'password'}
                                        placeholder=" "/>
-                                <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>Password</FormLabel>
+                                <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Password</FormLabel>
                                 <InputRightElement h={'full'}>
                                     <Button
                                         variant={'ghost'}
@@ -147,7 +156,8 @@ const AuthSignUp = () => {
                                 <Input id="passwordConfirmation" placeholder=" "
                                        type="password"
                                        {...register("passwordConfirmation")}/>
-                                <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>Confirm Password</FormLabel>
+                                <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Confirm
+                                    Password</FormLabel>
 
                             </InputGroup>
                             <FormErrorMessage>{errors.passwordConfirmation?.message}</FormErrorMessage>
@@ -159,7 +169,7 @@ const AuthSignUp = () => {
                                 colorScheme="teal"
                                 loadingText="Submitting"
                                 size="lg"
-                                >
+                            >
                                 Sign up
                             </Button>
                         </Stack>

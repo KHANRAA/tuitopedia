@@ -20,7 +20,12 @@ const useFaqStore = create<FaqState>((set) => ({
         set((state) => ({
             faqs: state.faqs.map((eachFaq) => {
                 if (eachFaq.id === newFaq.id) {
-                    eachFaq = newFaq;
+                    eachFaq.isActive = newFaq.isActive;
+                    eachFaq.imageUrl = newFaq.imageUrl;
+                    eachFaq.title = newFaq.title;
+                    eachFaq.content = newFaq.content;
+                    eachFaq.category = newFaq.category
+
                 }
                 return eachFaq;
             })
