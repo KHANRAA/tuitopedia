@@ -1,6 +1,6 @@
 import {extendTheme, theme as defaultTheme} from '@chakra-ui/react';
 import {withProse} from '@nikolovlazar/chakra-ui-prose'
-import type { GlobalStyleProps} from "@chakra-ui/theme-tools";
+import type {GlobalStyleProps} from "@chakra-ui/theme-tools";
 import {mode} from '@chakra-ui/theme-tools';
 
 
@@ -28,8 +28,6 @@ const theme = extendTheme({
                             left: 0,
                             zIndex: 2,
                             position: "absolute",
-                            backgroundColor: "white",
-                            textColor: "black",
                             pointerEvents: "none",
                             mx: 3,
                             px: 1,
@@ -91,22 +89,6 @@ const theme = extendTheme({
                 color: mode('gray.800', 'whiteAlpha.900')(props),
                 bg: mode('white', 'gray.800')(props),
                 lineHeight: 'tall',
-            },
-            '*::placeholder': {
-                color: mode('gray.400', 'whiteAlpha.400')(props),
-            },
-            '*, *::before, &::after': {
-                borderColor: mode('gray.200', 'whiteAlpha.300')(props),
-                wordWrap: 'break-word',
-            }, '.mdx-prose': {
-                h1: {
-                    fontSize: 'xl',
-                    mb: '4',
-                },
-                p: {
-                    fontSize: 'sm',
-                    lineHeight: '1.4',
-                },
             },
         }),
     },

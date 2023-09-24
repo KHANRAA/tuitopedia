@@ -20,7 +20,7 @@ import {
     useColorModeValue,
     VStack, Center, FormErrorMessage,
 } from "@chakra-ui/react";
-
+import {AxiosError} from "axios";
 import {z} from 'zod';
 import {zodResolver} from "@hookform/resolvers/zod";
 import {BsPerson} from 'react-icons/bs';
@@ -29,6 +29,7 @@ import {MdOutlineEmail} from 'react-icons/md';
 import FileUpload from "../utils/FileUpload";
 import {useAddHelp} from "../../hooks/useHelps";
 import {useQueryClient} from "@tanstack/react-query";
+
 
 const formSchema = z.object({
     name: z.string().min(4, {message: 'Please Provide full name'}).max(60),
@@ -49,7 +50,12 @@ const Help = ({isOpen, onClose}: Props) => {
     const queryClient = useQueryClient();
     const toast = useToast();
     const [fileId, setFileId] = useState('');
-    const {handleSubmit, register, watch, setValue, formState: { errors}} = useForm<FormValues>({resolver: zodResolver(formSchema)})
+    const {
+        handleSubmit,
+        register,
+        setValue,
+        formState: {errors, isValid}
+    } = useForm<FormValues>({resolver: zodResolver(formSchema)})
     const useAddHelpMutution = useAddHelp();
 
     useEffect(() => {
@@ -63,15 +69,17 @@ const Help = ({isOpen, onClose}: Props) => {
             onSuccess: (data, variables, context) => {
                 queryClient.invalidateQueries({queryKey: ['helps']})
             },
-            onError: (error, variables, context) => {
+            onError: (error) => {
                 console.log(error);
-                toast({
-                    title: 'Something went wrong ',
-                    description: 'Something unexpected ...',
-                    status: 'error',
-                    duration: 5000,
-                    isClosable: true,
-                })
+                if (error instanceof AxiosError) {
+                    toast({
+                        title: 'Something went wrong ',
+                        description: error.response?.data?.data.message || 'Something unexpected ...',
+                        status: 'error',
+                        duration: 5000,
+                        isClosable: true,
+                    })
+                }
             }
         })
 
@@ -111,8 +119,9 @@ const Help = ({isOpen, onClose}: Props) => {
                                     </InputLeftElement>
                                     <Input {...register('name')} type="text" name="name"
                                            placeholder=" "/>
+                                    <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Provide Your
+                                        Name!</FormLabel>
                                 </InputGroup>
-                                <FormLabel>Provide Your Name!</FormLabel>
                                 <FormErrorMessage>{errors.name?.message}</FormErrorMessage>
                             </FormControl>
 
@@ -123,17 +132,21 @@ const Help = ({isOpen, onClose}: Props) => {
                                         <MdOutlineEmail/>
                                     </InputLeftElement>
                                     <Input {...register('email')} type="email" name="email" placeholder=" "/>
+                                    <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Provide your
+                                        Email!</FormLabel>
                                 </InputGroup>
-                                <FormLabel>Provide your Email!</FormLabel>
+
+                                <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                             </FormControl>
                             <FormControl id="issueImageId" isInvalid={!!errors.imageId}>
                                 <Input id="imageUrl" {...register('imageId')}
                                        type="text"
                                        value={fileId}
                                        hidden={true}
+                                       placeholder=" "
                                 />
 
-                                <FormLabel>Upload Image</FormLabel>
+                                <FormLabel hidden={true}>Upload Image</FormLabel>
                                 <FileUpload maxFiles={1} allowMultiple={false} fileTypes={['image/jpeg', 'image/png']}
                                             fileId={fileId} setFileId={setFileId} path={'contact/upload'}/>
                                 <FormErrorMessage>{errors.imageId?.message}</FormErrorMessage>
@@ -147,18 +160,15 @@ const Help = ({isOpen, onClose}: Props) => {
                                           rows={6}
                                           resize="block"
                                 />
-                                <FormLabel>Please provide the issue in detail!</FormLabel>
+                                <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Issue
+                                    details!</FormLabel>
                                 <FormErrorMessage>{errors.message?.message}</FormErrorMessage>
                             </FormControl>
 
                             <Button
                                 type="submit"
-                                colorScheme="blue"
-                                bg="blue.400"
+                                colorScheme={'teal'}
                                 color="white"
-                                _hover={{
-                                    bg: 'blue.500',
-                                }}
                                 width="full">
                                 Send Message
                             </Button>

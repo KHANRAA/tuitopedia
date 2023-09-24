@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {useColorModeValue} from "@chakra-ui/react";
 import PropTypes from "prop-types";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -19,8 +20,8 @@ interface Props {
 
 const QuillEditor = ({id, value, inputRef, placeholder, onChange, isReadonly}: Props) => {
     const [theme] = useState("snow");
-
     return (<ReactQuill
+        style={{color: useColorModeValue('black', 'black')}}
         id={id}
         ref={inputRef}
         theme={theme}
@@ -49,8 +50,7 @@ QuillEditor.modules = {
             {indent: "+1"},
         ],
         ["link"],
-        ["clean"],
-        [{color: []}, {background: []}], // dropdown with defaults from theme
+        ["clean"], // dropdown with defaults from theme
         [{font: []}],
         [{align: []}],
     ],
@@ -74,8 +74,6 @@ QuillEditor.formats = [
     "bullet",
     "indent",
     "link",
-    "image",
-    "video",
 ];
 
 QuillEditor.propTypes = {

@@ -15,7 +15,11 @@ import {
     MenuDivider, Icon
 } from "@chakra-ui/react";
 import {IoMdContacts} from "react-icons/io";
-import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
+import {CgFileDocument} from "react-icons/cg";
+import {FaUserFriends} from "react-icons/fa";
+import {FaPersonCircleQuestion} from "react-icons/fa6";
+import {HiOutlineDocumentPlus} from "react-icons/hi2";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import ColorModeSwitch from "./ColorModeSwitch";
 import {BiLogOut, BiLogIn} from "react-icons/bi";
 import {RiAdminLine} from 'react-icons/ri';
@@ -72,16 +76,13 @@ const NavBar = () => {
                             />
                         </MenuButton>
                         <MenuList alignItems={'center'}>
-                            {user && !user.tuitoPediaToken && (<MenuItem>
-                                <HStack onClick={() => {
-                                    if (!location.pathname.includes('auth')) {
-                                        navigate('/auth')
-                                    }
-                                }}>
-
-                                    <Icon as={BiLogIn}/>
-                                    <Text>Login</Text>
-                                </HStack>
+                            {user && !user.tuitoPediaToken && (<MenuItem onClick={() => {
+                                if (!location.pathname.includes('auth')) {
+                                    navigate('/auth?mode=login')
+                                }
+                            }}>
+                                <Icon as={BiLogIn}/>
+                                <Text>Login</Text>
                             </MenuItem>)}
                             {user && user.isAdmin && (
                                 <>
@@ -92,30 +93,39 @@ const NavBar = () => {
                                     <br/>
                                     <MenuDivider/>
                                     <MenuOptionGroup defaultValue='asc' title='Admin' type='radio'>
-                                        <MenuItem>
-                                            <HStack>
-                                                <NavLink to={'/admin/helps'}>
-                                                    <Icon as={IoMdContacts}/>
-                                                    Edit/View Queries</NavLink>
-                                            </HStack>
+                                        <MenuItem onClick={() => {
+                                            navigate('/admin/faqs')
+                                        }}>
+                                            <Icon as={RiAdminLine}/>
+                                            <Icon as={CgFileDocument}/>
+                                            <Text>Edit/View faqs</Text>
 
                                         </MenuItem>
-                                        <MenuItem>
-                                            <HStack>
-                                                <NavLink to={'/admin/addfaq'}>
-                                                    <Icon as={RiAdminLine}/>
-                                                    Add Faq</NavLink>
-                                            </HStack>
+                                        <MenuItem onClick={() => {
+                                            navigate('/admin/helps')
+                                        }}>
+                                            <Icon as={IoMdContacts}/>
+                                            <Icon as={FaPersonCircleQuestion}/>
+                                            <Text>Edit/View Queries</Text>
 
                                         </MenuItem>
-                                        <MenuItem>
-                                            <HStack>
-                                                <NavLink to={'/admin/users'}>
-                                                    <Icon as={RiAdminLine}/>
-                                                    Edit/View Users</NavLink>
-                                            </HStack>
+                                        <MenuItem onClick={() => {
+                                            navigate('/admin/addfaq')
+                                        }}>
+
+                                            <Icon as={RiAdminLine}/>
+                                            <Icon as={HiOutlineDocumentPlus}/>
+                                            <Text> Add Faq</Text>
 
                                         </MenuItem>
+                                        <MenuItem onClick={() => {
+                                            navigate('/admin/users')
+                                        }}>
+                                            <Icon as={RiAdminLine}/>
+                                            <Icon as={FaUserFriends}/>
+                                            <Text> Edit/View Users</Text>
+
+                                        </MenuItem>s
 
                                     </MenuOptionGroup>
                                     <MenuDivider/>
@@ -124,7 +134,7 @@ const NavBar = () => {
                                 <HStack onClick={async () => {
                                     await logOut();
                                     removeUser();
-                                    navigate(0);
+                                    navigate('/');
                                 }}>
                                     <Icon as={BiLogOut}/>
                                     <Text>Logout</Text>

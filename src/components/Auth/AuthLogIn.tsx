@@ -10,7 +10,7 @@ import {
     useToast,
     Text,
     Link as ReactLink,
-    useColorModeValue, Container, FormErrorMessage, InputRightElement, InputGroup,
+    useColorModeValue, Container, FormErrorMessage, InputRightElement, InputGroup, FormHelperText,
 } from "@chakra-ui/react";
 import {useState} from "react";
 import {AxiosError} from "axios";
@@ -25,7 +25,13 @@ const signInSchema = z.object({
     email: z.string().email().min(5),
     password: z
         .string()
-        .min(6, {message: "Password must be at least 6 characters"}),
+        .regex(new RegExp(".*[A-Z].*"), "One uppercase character")
+        .regex(new RegExp(".*[a-z].*"), "One lowercase character")
+        .regex(new RegExp(".*\\d.*"), "One number")
+        .regex(
+            new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+            "One special character"
+        ).min(6, {message: "Password must be at least 6 characters"}),
 }).required();
 
 type SignInData = z.infer<typeof signInSchema>;
@@ -34,19 +40,20 @@ const AuthLogin = () => {
     const toast = useToast();
 
     const [showPassword, setShowPassword] = useState(false);
-    const {register, formState: {errors}, handleSubmit} = useForm<SignInData>({
-        resolver: zodResolver(signInSchema)
-    })
+    const {register, formState: {errors, isDirty, isValid}, handleSubmit} = useForm<SignInData>({
+        resolver: zodResolver(signInSchema),
+        mode: 'onChange'
+    },)
     const {mutate, isLoading, isError, error} = useSignIn();
-
     const onSubmit: SubmitHandler<SignInData> = (values) => {
         mutate({data: {...values, returnSecureToken: true}});
         if (isError && error instanceof AxiosError) {
             toast({
-                title: 'Something went wrong ',
+                title: 'Something went wrong while Signing In ',
                 description: error.response?.data?.data.message || 'Something unexpected ...',
                 status: 'error',
-                duration: 5000,
+                position: 'bottom-right',
+                duration: 3000,
                 isClosable: true,
             })
         }
@@ -69,17 +76,18 @@ const AuthLogin = () => {
                     <Container as="form" method='post' onSubmit={handleSubmit(onSubmit)}>
                         <Stack spacing={4}>
                             <FormControl variant="floating" id="email" isInvalid={!!errors.email}>
-
-                                <Input type="email" {...register('email')} placeholder=" Provide email"/>
-                                <FormLabel>Email address</FormLabel>
+                                <Input type="email" {...register('email')} placeholder=" "/>
+                                <FormLabel backgroundColor={useColorModeValue('white', 'gray.700')}>Email
+                                    address</FormLabel>
                                 <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                             </FormControl>
                             <FormControl variant="floating" id="password" isInvalid={!!errors.password}>
 
                                 <InputGroup>
                                     <Input id="password"  {...register("password")}
-                                           type={showPassword ? 'text' : 'password'}
-                                           placeholder="********"/>
+                                           type={showPassword ? 'text' : 'password'} placeholder=" "/>
+                                    <FormLabel
+                                        backgroundColor={useColorModeValue('white', 'gray.700')}>Password</FormLabel>
                                     <InputRightElement h={'full'}>
                                         <Button
                                             variant={'ghost'}
@@ -87,7 +95,6 @@ const AuthLogin = () => {
                                             {showPassword ? <ViewIcon/> : <ViewOffIcon/>}
                                         </Button>
                                     </InputRightElement>
-                                    <FormLabel>Password</FormLabel>
 
                                 </InputGroup>
                                 <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
@@ -96,12 +103,11 @@ const AuthLogin = () => {
                             <Stack spacing={10}>
                                 <Button
                                     type="submit"
+                                    colorScheme='teal'
                                     isLoading={isLoading}
-                                    bg={'blue.400'}
+                                    isDisabled={!isValid}
                                     color={'white'}
-                                    _hover={{
-                                        bg: 'blue.500',
-                                    }}>
+                                >
                                     Sign in
                                 </Button>
                             </Stack>

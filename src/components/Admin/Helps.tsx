@@ -17,7 +17,7 @@ import {
     Skeleton,
     Td,
     Text,
-    Button, useDisclosure
+    Button, useDisclosure, Center, Avatar
 } from '@chakra-ui/react';
 
 import {BiSolidZoomIn} from "react-icons/bi";
@@ -31,7 +31,7 @@ import useHelpStore from "../../store/helpsStore";
 import ModalHelper from "../utils/ModalHelper";
 
 const Helps = () => {
-    const pulseBoxes = Array.from(Array(4).keys());
+    const pulseBoxes = Array.from(Array(6).keys());
     const {data, isLoading} = useAllHelps();
     const {helps, addHelps} = useHelpStore();
     const [modelContent, setModelContent] = useState('Loading ...');
@@ -67,10 +67,10 @@ const Helps = () => {
         </Container>
     }
     return (
-        <Container maxW="5xl" py={10} px={4}>
+        <Container maxW="8xl" py={10} px={4}>
             <Box border="1px solid" borderColor="gray.400" rounded="lg" boxShadow="lg">
                 <Flex justify="left" p={5}>
-                    <chakra.h3 fontSize="xl"  id="table-header" fontWeight="bold" textAlign="center">
+                    <chakra.h3 fontSize="xl" id="table-header" fontWeight="bold" textAlign="center">
                         Help Requests
                     </chakra.h3>
                 </Flex>
@@ -83,7 +83,7 @@ const Helps = () => {
                                 <Th>Email</Th>
                                 <Th w={'20%'}>Message</Th>
                                 <Th>Image</Th>
-                                <Th>Actions</Th>
+                                <Th><Center>Actions</Center></Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -103,21 +103,23 @@ const Helps = () => {
                                                 onOpen();
                                             }}
                                                         icon={<BiSolidZoomIn/>}/>
-                                            <ModalHelper key={eachHelp.id} modalContent={modelContent}
+                                            <ModalHelper key={eachHelp.id} childComponent={<Text>{modelContent}</Text>}
                                                          onClose={onClose}
                                                          isOpen={isOpen}></ModalHelper>
                                         </HStack>
 
                                     </Td>
                                     <Td fontSize="md">
-                                        <Link color='blue.500' href={eachHelp.imageUrl} isExternal>
-                                            Image <TbExternalLink/>
-                                        </Link>
+                                        <HStack spacing={0}>
+                                            <Avatar src={eachHelp.imageUrl}/>
+                                            <Link color='blue.500' href={eachHelp.imageUrl} isExternal><TbExternalLink/>
+                                            </Link>
+                                        </HStack>
                                     </Td>
                                     <Td>
                                         <Box rounded="md">
                                             <HStack spacing={3} justifyContent={'space-between'}>
-                                                <Button colorScheme={'pink'}
+                                                <Button colorScheme={'green'}
                                                         leftIcon={<VscCommentUnresolved/>}
                                                         onClick={() => {
 
@@ -127,7 +129,7 @@ const Helps = () => {
                                                                 }
                                                             })
                                                         }}>
-                                                    Mark Resolved
+                                                    Mark as Resolved
                                                 </Button>
                                             </HStack>
                                         </Box>

@@ -7,6 +7,7 @@ import CreateFaq from "./pages/Admin/CreateFaq";
 import UserPage from "./pages/Admin/UserPage";
 import {checkAdminLoader} from "./services/auth";
 import HelpsPage from "./pages/Admin/HelpsPage";
+import ManageFaqs from "./pages/Admin/ManageFaqs";
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,12 @@ const router = createBrowserRouter([
                 path: '/admin/addfaq',
                 loader: checkAdminLoader,
                 element: <CreateFaq/>,
+                errorElement: <ErrorPage/>,
+            },
+            {
+                path: '/admin/faqs',
+                loader: checkAdminLoader,
+                element: <ManageFaqs/>,
                 errorElement: <ErrorPage/>,
             },
             {

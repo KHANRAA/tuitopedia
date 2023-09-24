@@ -9,7 +9,13 @@ export async function addFaqRequest(faqData: AxiosRequestConfig<any>) {
     return await apiClient.post('add', {...faqData});
 }
 
-const apiClientGetRequest = new APIClient<Faq >('/faq');
+
+export async function updateFAQ(faqData: AxiosRequestConfig<any>) {
+    return await apiClient.put('update', {...faqData});
+}
+
+
+const apiClientGetRequest = new APIClient<Faq>('/faq');
 
 export async function getFaqs(config: AxiosRequestConfig<any>) {
     return await apiClientGetRequest.getAll(config);

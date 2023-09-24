@@ -16,3 +16,14 @@ export interface FaqRequest {
     imageId: string;
     category: string;
 };
+
+
+export const getDummyFaq = () => {
+    return {
+        id: '',
+        title: '',
+        imageUrl: '',
+        content: '',
+        category: '',
+    }
+};

@@ -51,7 +51,7 @@ const AuthSignUp = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: {errors, isValid},
     } = useForm<FormValues>({
         resolver: zodResolver(formSchema)
     });
@@ -71,8 +71,8 @@ const AuthSignUp = () => {
         if (isError && error instanceof AxiosError) {
             console.log(error);
             toast({
-                title: 'Something went wrong ',
-                description: error.response?.data.data.message || 'Something unexpected ...',
+                title: 'Something went wrong signup ',
+                description: error.response?.data.data.message || 'Something unexpected fro SignUp ...',
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
@@ -101,15 +101,15 @@ const AuthSignUp = () => {
 
                             <FormControl variant="floating" id="firstName" isInvalid={!!errors.firstName}>
 
-                                <Input id="firstName" {...register("firstName")} placeholder="First Name" type="text"/>
-                                <FormLabel>First Name</FormLabel>
+                                <Input id="firstName" {...register("firstName")} placeholder=" " type="text"/>
+                                <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>First Name</FormLabel>
                                 <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
                             </FormControl>
 
 
                             <FormControl variant="floating" id="lastName" isInvalid={!!errors.lastName}>
 
-                                <Input id="lastName" {...register("lastName")} placeholder="Last Name" type="text"/>
+                                <Input id="lastName" {...register("lastName")} placeholder=" " type="text"/>
                                 <FormLabel>Last Name</FormLabel>
                                 <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
                             </FormControl>
@@ -117,8 +117,8 @@ const AuthSignUp = () => {
                         </HStack>
                         <FormControl variant="floating" id="email" isInvalid={!!errors.email}>
 
-                            <Input id="email" {...register("email")} placeholder="Email" type="email"/>
-                            <FormLabel>Email address</FormLabel>
+                            <Input id="email" {...register("email")} placeholder=" " type="email"/>
+                            <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>Email address</FormLabel>
                             <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                         </FormControl>
                         <FormControl variant="floating" id="password" isInvalid={!!errors.password}>
@@ -126,7 +126,8 @@ const AuthSignUp = () => {
                             <InputGroup>
                                 <Input id="password"  {...register("password")}
                                        type={showPassword ? 'text' : 'password'}
-                                       placeholder="********"/>
+                                       placeholder=" "/>
+                                <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>Password</FormLabel>
                                 <InputRightElement h={'full'}>
                                     <Button
                                         variant={'ghost'}
@@ -134,7 +135,6 @@ const AuthSignUp = () => {
                                         {showPassword ? <ViewIcon/> : <ViewOffIcon/>}
                                     </Button>
                                 </InputRightElement>
-                                <FormLabel>Password</FormLabel>
 
                             </InputGroup>
                             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
@@ -144,25 +144,22 @@ const AuthSignUp = () => {
                                      isInvalid={!!errors.passwordConfirmation}>
 
                             <InputGroup>
-                                <Input id="passwordConfirmation" placeholder="********"
+                                <Input id="passwordConfirmation" placeholder=" "
                                        type="password"
                                        {...register("passwordConfirmation")}/>
+                                <FormLabel backgroundColor={useColorModeValue('white','gray.700')}>Confirm Password</FormLabel>
 
                             </InputGroup>
-                            <FormLabel>Confirm Password</FormLabel>
                             <FormErrorMessage>{errors.passwordConfirmation?.message}</FormErrorMessage>
                         </FormControl>
                         <Stack spacing={10} pt={2}>
                             <Button
                                 type="submit"
                                 isLoading={isLoading}
+                                colorScheme="teal"
                                 loadingText="Submitting"
                                 size="lg"
-                                bg={'blue.400'}
-                                color={'white'}
-                                _hover={{
-                                    bg: 'blue.500',
-                                }}>
+                                >
                                 Sign up
                             </Button>
                         </Stack>

@@ -16,7 +16,7 @@ import {
     Skeleton,
     Td,
     Text,
-    Button, AvatarBadge, Avatar, WrapItem
+    Button, AvatarBadge, Avatar, WrapItem, useColorModeValue, Center
 } from '@chakra-ui/react';
 
 import {TiUserDelete} from 'react-icons/ti';
@@ -60,7 +60,7 @@ const Users = () => {
         </Container>
     }
     return (
-        <Container maxW="5xl" py={10} px={4}>
+        <Container maxW="7xl" py={10} px={4}>
             <Box border="1px solid" borderColor="gray.400" rounded="lg" boxShadow="lg" overflow="hidden">
                 <Flex justify="left" p={5}>
                     <chakra.h3 fontSize="xl" fontWeight="bold" textAlign="center">
@@ -75,7 +75,7 @@ const Users = () => {
                                 <Th>Name</Th>
                                 <Th>Email</Th>
                                 <Th>Role</Th>
-                                <Th>Actions</Th>
+                                <Th><Center>Actions</Center></Th>
                             </Tr>
                         </Thead>
                         <Tbody>
@@ -103,9 +103,9 @@ const Users = () => {
                                     </Badge></Td>
                                     <Td>
                                         <Box rounded="md">
-                                            <HStack spacing={3} justifyContent={'space-between'}>
-                                                <Button colorScheme={eachUser.isActive ? 'gray.800' : 'green'}
-                                                        textColor={eachUser.isActive ? 'black' : 'white'}
+                                            <HStack spacing={3} justifyContent={'space-evenly'}>
+                                                <Button colorScheme={eachUser.isActive ? 'black': 'green'}
+                                                        textColor={eachUser.isActive ? 'green' : 'red'}
                                                         variant={eachUser.isActive ? 'outline' : 'solid'}
                                                         leftIcon={<TiUserDelete/>} onClick={() => {
 

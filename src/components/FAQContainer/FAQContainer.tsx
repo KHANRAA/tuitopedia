@@ -23,6 +23,7 @@ import useCategoriesStore from "../../store/categoriesStore";
 const FAQContainer = () => {
     const textColor = useColorModeValue('gray.500', 'gray.200');
     const [isOpen, setIsOpen] = useState(false);
+    const [opedId, setOpenid] = useState('');
     const [selectedCategory, setCategory] = useState('');
     const {data, isLoading, isError, error} = useAllFaq();
     const {addFaq, removeFaq, faqs} = useFaqStore();
@@ -41,21 +42,24 @@ const FAQContainer = () => {
     }, [data, addFaq, removeFaq, category]);
 
 
-    const toggleOpen = () => setIsOpen(!isOpen);
+    const toggleOpen = (faqId: string) => {
+        setIsOpen(!isOpen);
+        setOpenid(faqId)
+    };
     return (
         <>
             {(isLoading || faqs.length === 0) && (<FAQSkeleton/>)}
             {!isLoading && (<>
                 <FaqCategories/>
-                <Container maxW="6xl" p={{base: 5, md: 5}}>
+                <Container maxW="8xl" p={{base: 5, md: 5}}>
                     <VStack spacing={8}>
                         {faqs.map((eachFaq: Faq) => (
-                            <chakra.div onClick={toggleOpen} key={eachFaq.id} width="90%">
+                            <chakra.div onClick={() => toggleOpen(eachFaq.id)} key={eachFaq.id} width="90%">
                                 <Box hidden={category !== '' && eachFaq.category !== selectedCategory}>
                                     <HStack
                                         p={4}
                                         rounded="xl"
-                                        borderWidth="1px"
+                                        borderWidth="2px"
                                         textAlign="left"
                                         align="start"
                                         spacing={4}
@@ -88,7 +92,7 @@ const FAQContainer = () => {
                                                            dangerouslySetInnerHTML={{__html: Parser(eachFaq.content).toString()}}/>
                                                 )}
 
-                                                {isOpen && (
+                                                {isOpen && opedId === eachFaq.id && (
                                                     <Prose fontSize="sm" color={textColor}
                                                            dangerouslySetInnerHTML={{__html: Parser(eachFaq.content).toString()}}/>
                                                 )}
