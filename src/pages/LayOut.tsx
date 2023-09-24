@@ -8,7 +8,7 @@ const LayOut = () => {
         <Box>
 
             <NavBar/>
-            <Box bg={useColorModeValue('gray.50', 'gray.800')}>
+            <Box bg={useColorModeValue('white', 'gray.800')}>
                 <Outlet/>
                 <Footer/>
             </Box>
